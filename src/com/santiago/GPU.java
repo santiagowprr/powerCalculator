@@ -10,8 +10,8 @@ public class GPU {
     public GPU() {
         this.name = "GTX 1060";
         this.price = 900;
+        this.readings = new ArrayList<Reading>();
     }
-
 
     public boolean addReading(Reading reading){
         this.readings.add(reading);

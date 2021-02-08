@@ -25,10 +25,25 @@ public class PC {
 
     public Reading calculateProfitableOption(){
         Reading bestReading = new Reading(0,0,0,0,0);
+        int basePcPower = processorPower + restPower;   // power of PC without GPU
+
         for(int i=0; i<graphicsCard.getReadings().size(); i++){
-            this.graphicsCard.getReadings().get(i);
+            int currentPowerConsumed = this.graphicsCard.getReadings().get(i).getPowerConsumed();
+            double currentHashrate = this.graphicsCard.getReadings().get(i).getHashrate();
+            double currentProfitability = (currentHashrate * 2) / (basePcPower + (currentPowerConsumed * 2)); //  multiplying hashrate and power consumed by 2, cause there are 2 GPUs
+            double bestProfitability = (bestReading.getHashrate()*2) / (basePcPower + (bestReading.getPowerConsumed() * 2));
+
+            if (currentProfitability > bestProfitability){
+                int powerLimit = this.graphicsCard.getReadings().get(i).getPowerLimit();
+                int coreClock = this.graphicsCard.getReadings().get(i).getCoreClock();
+                int memClock = this.graphicsCard.getReadings().get(i).getMemClock();
+                bestReading.setPowerConsumed(currentPowerConsumed);
+                bestReading.setHashrate(currentHashrate);
+                bestReading.setPowerLimit(powerLimit);
+                bestReading.setCoreClock(coreClock);
+                bestReading.setMemClock(memClock);
+            }
         }
         return bestReading;
     }
-
 }
